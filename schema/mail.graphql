@@ -1,0 +1,21 @@
+type Mail {
+  domain: String
+  service: String!
+  ip: String!
+  entity: String
+  entity_id: String
+  sender: String!
+  recipient: String!
+  cc: String
+  bcc: String
+  subject: String
+  text: String
+  html: String
+  tokens: String
+  result: String
+}
+
+type Unsubscribe {
+  message_id : String!
+  recipient: String!
+}

@@ -1,0 +1,10 @@
+type Webhook {
+  service:String!
+  type:String!
+  value:String!
+  entity:String
+  entity_id:String
+  email:String
+  user_key:String
+  user_value:String
+}

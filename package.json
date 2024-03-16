@@ -1,0 +1,25 @@
+{
+  "name": "@kohanajs/mod-mail",
+  "version": "8.0.2",
+  "description": "KohanaJS Transactional Email Module",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/kohana-js/proposals/level0/mod-mail.git"
+  },
+  "keywords": [
+    "KohanaJS",
+    "email",
+    "mailer"
+  ],
+  "author": "Kojin Nakana",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/kohana-js/proposals/level0/mod-mail/issues"
+  },
+  "homepage": "https://gitlab.com/kohana-js/proposals/level0/mod-mail#readme",
+  "dependencies": {}
+}
