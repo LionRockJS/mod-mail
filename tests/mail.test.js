@@ -1,8 +1,9 @@
-const {KohanaJS} = require('kohanajs');
-KohanaJS.classPath.set('model/Mail.js', require('../classes/model/Mail'));
+import { Central } from '@lionrockjs/central';
+import MailModel from '../classes/model/Mail.mjs';
+Central.classPath.set('model/Mail.mjs', MailModel);
 
-const Mail = require('../classes/Mail');
-const {MailAdapter} = require("../index");
+import Mail from '../classes/Mail.mjs';
+import MailAdapter from '../classes/MailAdapter.mjs';
 
 describe('mail test', () => {
   test('constructor', async () => {

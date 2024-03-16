@@ -1,6 +1,6 @@
 import { Central } from '@lionrockjs/central';
 
-module.exports = {
+export default {
   templateFolder: `${Central.EXE_PATH}/../public/media/edm`,
   databasePath: `${Central.EXE_PATH}/../database`,
   cache: true,
