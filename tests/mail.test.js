@@ -4,6 +4,7 @@ Central.classPath.set('model/Mail.mjs', MailModel);
 
 import Mail from '../classes/Mail.mjs';
 import MailAdapter from '../classes/MailAdapter.mjs';
+const __dirname = new URL('.', import.meta.url).pathname;
 
 describe('mail test', () => {
   test('constructor', async () => {

@@ -100,10 +100,7 @@ export default class Mail {
     content.subject = this.parse(content.subject, tokens);
 
     const adapter = (preview) ? this.#previewAdapter : this.#adapter;
-    const options = { cc, bcc, inlines, attachments, metadata };
-    if(content.html){
-      options.html = content.html;
-    }
+    const options = { cc, bcc, inlines, attachments, metadata, html: content.html };
     const result = await adapter.send(content.subject, content.text, sender, recipient, options);
 
     if (!Central.config.mail?.cache) this.clearCache();

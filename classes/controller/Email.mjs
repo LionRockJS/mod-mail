@@ -2,9 +2,8 @@ import { Controller } from '@lionrockjs/mvc';
 import { ControllerMixinMultipartForm } from '@lionrockjs/mod-form';
 import { ControllerMixinDatabase, ControllerMixinMime, Central, ORM } from '@lionrockjs/central';
 
-const Mail = await ORM.import('Mail');
+const MailModel = await ORM.import('Mail');
 const Unsubscribe = await ORM.import('Unsubscribe');
-const HelperMail = await Central.import('helper/Mail');
 
 /**
  * Controller Email
@@ -17,14 +16,16 @@ export default class ControllerEmail extends Controller {
 
   constructor(request) {
     super(request);
+    const databasePath = Central.config.mail.databasePath;
+    const database = Central.config.mail.database;
 
-    this.state.get(ControllerMixinDatabase.DATABASE_MAP).set('mail', Central.config.mail.dbMail);
+    this.state.get(ControllerMixinDatabase.DATABASE_MAP).set('mail', databasePath + '/' + database);
   }
 
   async action_view() {
     const database = this.state.get(ControllerMixinDatabase.DATABASES).get('mail');
-    const mail = await ORM.factory(Mail, this.request.params.id, { database });
-    this.body = await new HelperMail().read(mail.html_template, JSON.parse(mail.tokens));
+    const mail = await ORM.factory(MailModel, this.request.params.id, { database });
+    this.body = await new Mail().read(mail.html_template, JSON.parse(mail.tokens));
   }
 
   async action_unsubscribe(){
