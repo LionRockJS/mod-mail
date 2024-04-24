@@ -1,5 +1,6 @@
 import { ORM } from '@lionrockjs/central';
-const Mail = await ORM.import('Mail');
+import DefaultMail from './model/Mail.mjs';
+const Mail = await ORM.import('Mail', DefaultMail);
 
 export default class MailData {
   static async write(mailResult, opts){
