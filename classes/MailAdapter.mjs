@@ -1,3 +1,5 @@
+import {Central} from '@lionrockjs/central';
+
 export default class MailAdapter {
   service = 'PREVIEW';
 
@@ -17,7 +19,7 @@ export default class MailAdapter {
    * @returns {Promise<{payload: *, status: string}>}
    */
   async send(subject, text, sender, recipient, opts = {}) {
-    console.log(`${this.service} send email to ${recipient} using preview mail adapter`);
+    Central.log(`${this.service} send email to ${recipient} using preview mail adapter`);
     return {
       status: 'success',
       payload: {
@@ -30,7 +32,7 @@ export default class MailAdapter {
   }
 
   async readLog(email) {
-    console.log(`${this.service} read email log using mail adapter: ${email}`);
+    Central.log(`${this.service} read email log using mail adapter: ${email}`);
     return new Map([
       ['lorem-id', { open: 0, click: 0 }],
     ]);
