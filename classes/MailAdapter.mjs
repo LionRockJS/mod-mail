@@ -19,7 +19,7 @@ export default class MailAdapter {
    * @returns {Promise<{payload: *, status: string}>}
    */
   async send(subject, text, sender, recipient, opts = {}) {
-    Central.log(`${this.service} send email to ${recipient} using preview mail adapter`);
+    Central.log(`${this.service} send email to ${recipient} using preview mail adapter`, false);
     return {
       status: 'success',
       payload: {
@@ -32,7 +32,7 @@ export default class MailAdapter {
   }
 
   async readLog(email) {
-    Central.log(`${this.service} read email log using mail adapter: ${email}`);
+    Central.log(`${this.service} read email log using mail adapter: ${email}`, false);
     return new Map([
       ['lorem-id', { open: 0, click: 0 }],
     ]);
