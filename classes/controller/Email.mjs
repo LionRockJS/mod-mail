@@ -1,5 +1,5 @@
 import { Controller } from '@lionrockjs/mvc';
-import { ControllerMixinMultipartForm } from '@lionrockjs/mod-form';
+import { ControllerMixinMultipartForm } from '@lionrockjs/mixin-form';
 import { ControllerMixinDatabase, ControllerMixinMime, Central, ORM } from '@lionrockjs/central';
 import Mail from '../Mail.mjs';
 
