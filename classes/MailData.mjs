@@ -1,4 +1,4 @@
-import { ORM } from '@lionrockjs/central';
+import {  ORM } from '@lionrockjs/central';
 import DefaultMail from './model/Mail.mjs';
 const Mail = await ORM.import('Mail', DefaultMail);
 

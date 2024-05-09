@@ -7,7 +7,7 @@
  */
 import path from 'node:path';
 import fs from 'node:fs';
-import { ORM, Central } from '@lionrockjs/central';
+import { Model, Central } from '@lionrockjs/central';
 import MailAdapter from './MailAdapter.mjs';
 
 const cache = new Map();
@@ -76,7 +76,7 @@ export default class Mail {
       preview = false,
     } = opts;
 
-    tokens.view_id = tokens.view_id || ORM.defaultAdapter.defaultID();
+    tokens.view_id = tokens.view_id || Model.defaultAdapter.defaultID();
     tokens.domain = tokens.domain || this.#domain;
     tokens.ip     = tokens.ip || this.#ip;
 

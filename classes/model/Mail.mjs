@@ -1,6 +1,6 @@
-import { ORM } from '@lionrockjs/central';
+import { Model } from '@lionrockjs/central';
 
-export default class Mail extends ORM{
+export default class Mail extends Model{
   domain = null;
   service = null;
   ip = null;

@@ -1,6 +1,6 @@
-import { ORM } from '@lionrockjs/central';
+import { Model } from '@lionrockjs/central';
 
-export default class Unsubscribe extends ORM{
+export default class Unsubscribe extends Model{
   message_id = null;
   recipient = null;
 
