@@ -143,6 +143,8 @@ export default class Mail {
   }
 
   parse(rawText, tokens={}){
+    if(!rawText)return "";
+
     let result = rawText;
     Object.keys(tokens).forEach(key => {
       const regExp = new RegExp(`{{@?${key}}}`, 'gi');
