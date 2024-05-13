@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@lionrockjs/mod-mail",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "LionRockJS Transactional Email Module",
   "main": "index.js",
   "scripts": {

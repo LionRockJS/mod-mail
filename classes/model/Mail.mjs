@@ -11,8 +11,8 @@ export default class Mail extends Model{
   cc = null;
   bcc = null;
   subject = null;
-  text_template = null;
-  html_template = null;
+  text = null;
+  html = null;
   tokens = null;
   result = null;
 
@@ -30,8 +30,8 @@ export default class Mail extends Model{
     ["cc", "String"],
     ["bcc", "String"],
     ["subject", "String"],
-    ["text_template", "String"],
-    ["html_template", "String"],
+    ["text", "String"],
+    ["html", "String"],
     ["tokens", "String"],
     ["result", "String"]
   ]);
