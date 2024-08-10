@@ -15,16 +15,6 @@ const cache = new Map();
 export default class Mail {
   static defaultMailAdapter = MailAdapter;
 
-  /**
-   *
-   * @param domain
-   * @param ip
-   * @param opts
-   * @param {MailAdapter} opts.adapter
-   * @param {string} opts.templateFolder
-   */
-  #domain
-  #ip
   #adapter
   #previewAdapter
   #templateFolder
@@ -33,12 +23,8 @@ export default class Mail {
     const {
       adapter = Mail.defaultMailAdapter,
       templateFolder = null,
-      domain = '',
-      ip = '',
     } = opts;
 
-    this.#domain = domain;
-    this.#ip = ip;
     // eslint-disable-next-line new-cap
     this.#adapter = new adapter();
     this.#templateFolder = templateFolder;
@@ -77,8 +63,6 @@ export default class Mail {
     } = opts;
 
     tokens.view_id = tokens.view_id || Model.defaultAdapter.defaultID();
-    tokens.domain = tokens.domain || this.#domain;
-    tokens.ip     = tokens.ip || this.#ip;
 
     const content = {
       text,
@@ -108,9 +92,7 @@ export default class Mail {
     return {
       ...result,
       args:{
-        domain: this.#domain,
         service: this.#adapter.service,
-        ip: this.#ip,
         sender,
         recipient,
         cc,
