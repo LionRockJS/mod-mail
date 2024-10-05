@@ -1,4 +1,5 @@
-import { RouteList, Central } from '@lionrockjs/central';
+import { Central } from '@lionrockjs/central';
+import { RouteList } from '@lionrockjs/router';
 
 RouteList.add(`/webhook/${Central.config.mail.webhookKey}/:service/:type`, 'controller/Webhook', 'notification', 'POST');
 RouteList.add('/email/view/:id', 'controller/Email', 'view');
