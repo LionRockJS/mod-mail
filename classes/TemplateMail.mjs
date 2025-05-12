@@ -1,29 +1,36 @@
 /**
- * Copyright (c) 2025 Kojin Nakana
+ * Copyright (c) 2024 Kojin Nakana
  *
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
- * this is base on mod-mail/Mail without template loading
+ *
  */
+import path from 'node:path';
+import fs from 'node:fs';
+import { Model, Central } from '@lionrockjs/central';
+import MailAdapter from './MailAdapter.mjs';
 
-import { Model } from '@lionrockjs/central';
-import { MailAdapter } from '@lionrockjs/mod-mail';
+const cache = new Map();
 
-export default class Mail {
+export default class TemplateMail {
   static defaultMailAdapter = MailAdapter;
 
   #adapter
   #previewAdapter
+  #templateFolder
 
   constructor(opts = {}) {
     const {
-      adapter = Mail.defaultMailAdapter,
+      adapter = TemplateMail.defaultMailAdapter,
+      templateFolder = null,
     } = opts;
 
     // eslint-disable-next-line new-cap
     this.#adapter = new adapter();
+    this.#templateFolder = templateFolder;
     this.#previewAdapter = new MailAdapter();
   }
+
 
   /**
    *
@@ -53,8 +60,6 @@ export default class Mail {
       tokens = {},
       metadata = '',
       preview = false,
-      project = undefined,
-      dynamoDB = undefined,
     } = opts;
 
     tokens.view_id = tokens.view_id || Model.defaultAdapter.defaultID();
@@ -65,14 +70,25 @@ export default class Mail {
       subject
     }
 
+    if(typeof this.#templateFolder ==='string'){
+      content.text = await this.readTemplate(this.#templateFolder, content.text);
+      content.html = await this.readTemplate(this.#templateFolder, content.html);
+    }else if(this.#templateFolder instanceof Map){
+      await Promise.all([...this.#templateFolder.entries()].map(async v => {
+        content[v[0]] = await this.readTemplate(v[1], content[v[0]])
+      }))
+    }
+
     content.text = this.parse(content.text, tokens);
     content.html = this.parse(content.html, tokens);
     content.subject = this.parse(content.subject, tokens);
 
     const adapter = (preview) ? this.#previewAdapter : this.#adapter;
-    const options = { cc, bcc, inlines, attachments, metadata, html: content.html, project, dynamoDB};
-
+    const options = { cc, bcc, inlines, attachments, metadata, html: content.html };
     const result = await adapter.send(content.subject, content.text, sender, recipient, options);
+
+    if (!Central.config.mail?.cache) this.clearCache();
+
     return {
       ...result,
       args:{
@@ -87,6 +103,27 @@ export default class Mail {
     };
   }
 
+  async readTemplate(templateFolder, templateFile) {
+    if(templateFile === '')return null;
+    if(/\.\.|\s/.test(templateFile)) throw new Error('Template File Path cannot contain .. or space');
+
+    const templatePath = `${templateFolder}/${templateFile}`;
+    if(cache.get(templatePath))return cache.get(templatePath);
+
+    //handler
+    if(/^@/i.test(templateFolder))return templatePath;
+
+    let result = null;
+    try{
+      result = await fs.promises.readFile(path.normalize(templatePath), 'utf8');
+    }catch(e){
+      //supress error;
+    }
+
+    cache.set(templatePath, result);
+    return result;
+  }
+
   parse(rawText, tokens={}){
     if(!rawText)return "";
 
@@ -97,5 +134,9 @@ export default class Mail {
     });
 
     return result;
+  }
+
+  clearCache(){
+    cache.clear();
   }
 }

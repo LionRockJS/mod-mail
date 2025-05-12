@@ -2,13 +2,13 @@ import { Central } from '@lionrockjs/central';
 import MailModel from '../classes/model/Mail.mjs';
 Central.classPath.set('model/Mail.mjs', MailModel);
 
-import Mail from '../classes/Mail.mjs';
+import TemplateMail from '../classes/TemplateMail.mjs';
 import MailAdapter from '../classes/MailAdapter.mjs';
 const __dirname = new URL('.', import.meta.url).pathname;
 
 describe('mail test', () => {
   test('constructor', async () => {
-    const mail = new Mail({domain: 'localhost', ip: '127.0.0.1', adapter : Mail.defaultMailAdapter,});
+    const mail = new TemplateMail({domain: 'localhost', ip: '127.0.0.1', adapter : TemplateMail.defaultMailAdapter,});
     const result = await mail.send('subject', 'message', 'test@kohanajs.com', 'hello@kohanajs.com');
     expect(result.id).toBe("00000");
     expect(result.payload.message).toBe("PREVIEW always sent successfully");
@@ -18,7 +18,7 @@ describe('mail test', () => {
   });
 
   test('preview direct text', async () => {
-    const mail = new Mail({domain: 'localhost', ip: '127.0.0.1'});
+    const mail = new TemplateMail({domain: 'localhost', ip: '127.0.0.1'});
 
     const result = await mail.send('subject', 'txt', 'TEST', '20221234', {
       preview: true,
@@ -28,7 +28,7 @@ describe('mail test', () => {
   })
 
   test('preview direct text, ignore token', async () => {
-    const mail = new Mail({domain: 'localhost', ip: '127.0.0.1'});
+    const mail = new TemplateMail({domain: 'localhost', ip: '127.0.0.1'});
 
     const result = await mail.send('subject', 'txt', 'TEST', '20221234', {
       tokens: {'message': 'hello world'},
@@ -39,7 +39,7 @@ describe('mail test', () => {
   })
 
   test('text with placeholder', async () => {
-    const mail = new Mail({domain: 'localhost', ip: '127.0.0.1'});
+    const mail = new TemplateMail({domain: 'localhost', ip: '127.0.0.1'});
 
     const result = await mail.send('subject', 'hey {{@message}}', 'TEST', '20221234', {
       tokens: {'message': 'hello world'},
@@ -51,7 +51,7 @@ describe('mail test', () => {
   })
 
   test('html with placeholder', async () => {
-    const mail = new Mail({domain: 'localhost', ip: '127.0.0.1'});
+    const mail = new TemplateMail({domain: 'localhost', ip: '127.0.0.1'});
 
     const result = await mail.send('subject', 'hey {{@message}}', 'TEST', '20221234', {
       tokens: {'message': 'hello world'},
@@ -64,7 +64,7 @@ describe('mail test', () => {
   })
 
   test('preview with all template', async () => {
-    const mail = new Mail({
+    const mail = new TemplateMail({
       domain: 'localhost',
       ip: '127.0.0.1',
       templateFolder: `${__dirname}/edm`
@@ -81,7 +81,7 @@ describe('mail test', () => {
   })
 
   test('preview with direct text, html template', async () => {
-    const mail = new Mail({
+    const mail = new TemplateMail({
       domain: 'localhost',
       ip: '127.0.0.1',
       templateFolder: new Map([
@@ -104,7 +104,7 @@ describe('mail test', () => {
   })
 
   test('template use handle', async () => {
-    const mail = new Mail({
+    const mail = new TemplateMail({
       domain: 'localhost',
       ip: '127.0.0.1',
       templateFolder: '@edm'

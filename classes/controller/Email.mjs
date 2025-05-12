@@ -1,7 +1,7 @@
 import { Controller } from '@lionrockjs/mvc';
 import { ControllerMixinMultipartForm } from '@lionrockjs/mixin-form';
 import { ControllerMixinDatabase, ControllerMixinMime, Central, ORM } from '@lionrockjs/central';
-import Mail from '../Mail.mjs';
+import TemplateMail from '../TemplateMail.mjs';
 
 import DefaultMail from '../model/Mail.mjs';
 import DefaultUnsubscribe from '../model/Unsubscribe.mjs';
@@ -31,7 +31,7 @@ export default class ControllerEmail extends Controller {
     const {id} = this.state.get(Controller.STATE_PARAMS);
 
     const mail = await ORM.factory(MailModel, id, { database });
-    const m = new Mail();
+    const m = new TemplateMail();
     this.state.set(Controller.STATE_BODY, m.parse(mail.html_template, JSON.parse(mail.tokens)));
   }
 
