@@ -6,7 +6,7 @@
  * this is base on mod-mail/Mail without template loading
  */
 
-import { Controller, ControllerMixinDatabase, Central, ORM } from '@lionrockjs/central';
+import { ControllerMixinDatabase, Central, ORM } from '@lionrockjs/central';
 import { MailAdapter } from '@lionrockjs/mod-mail';
 import ModelMail from './model/Mail.mjs';
 
@@ -49,6 +49,7 @@ export default class Mail {
 
   async send(subject, text, sender, recipient, opts = {}) {
     const {
+      ip = '0.0.0.0',
       cc = '',
       bcc = '',
       html='',
@@ -68,7 +69,7 @@ export default class Mail {
     const mail = ORM.create(ModelMail, {database});
     Object.assign(mail,{
       service: this.#adapter.service,
-      ip: this.state.get(Controller.STATE_CLIENT_IP),
+      ip,
       sender,
       recipient,
       subject,
