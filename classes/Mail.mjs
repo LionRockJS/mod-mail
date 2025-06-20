@@ -72,7 +72,11 @@ export default class Mail {
       ip,
       sender,
       recipient,
+      cc,
+      bcc,
       subject,
+      html,
+      text,
       tokens: JSON.stringify(tokens),
     })
     await mail.write();
