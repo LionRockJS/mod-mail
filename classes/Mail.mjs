@@ -6,8 +6,9 @@
  * this is base on mod-mail/Mail without template loading
  */
 
-import { Model } from '@lionrockjs/central';
+import { Controller, ControllerMixinDatabase, Central, ORM } from '@lionrockjs/central';
 import { MailAdapter } from '@lionrockjs/mod-mail';
+import ModelMail from './model/Mail.mjs';
 
 export default class Mail {
   static defaultMailAdapter = MailAdapter;
@@ -23,6 +24,9 @@ export default class Mail {
     // eslint-disable-next-line new-cap
     this.#adapter = new adapter();
     this.#previewAdapter = new MailAdapter();
+    this.state = new Map();
+    ControllerMixinDatabase.init(this.state);
+    this.state.get(ControllerMixinDatabase.DATABASE_MAP).set('mail', Central.config.mail.databasePath + '/' + Central.config.mail.database);
   }
 
   /**
@@ -55,9 +59,24 @@ export default class Mail {
       preview = false,
       project = undefined,
       dynamoDB = undefined,
+      entity = "",
+      entity_id = "",
     } = opts;
 
-    tokens.view_id = tokens.view_id || Model.defaultAdapter.defaultID();
+    await ControllerMixinDatabase.setup(this.state);
+    const database = this.state.get(ControllerMixinDatabase.DATABASES).get('mail');
+    const mail = ORM.create(ModelMail, {database});
+    Object.assign(mail,{
+      service: this.#adapter.service,
+      ip: this.state.get(Controller.STATE_CLIENT_IP),
+      sender,
+      recipient,
+      subject,
+      tokens: JSON.stringify(tokens),
+    })
+    await mail.write();
+
+    tokens.view_id = mail.id;
 
     const content = {
       text,
@@ -73,6 +92,11 @@ export default class Mail {
     const options = { cc, bcc, inlines, attachments, metadata, html: content.html, project, dynamoDB};
 
     const result = await adapter.send(content.subject, content.text, sender, recipient, options);
+
+    mail.result = JSON.stringify(result);
+    mail.tokens = JSON.stringify(tokens);
+    await mail.write();
+
     return {
       ...result,
       args:{
@@ -83,6 +107,8 @@ export default class Mail {
         bcc,
         subject,
         tokens: JSON.stringify(tokens),
+        entity,
+        entity_id,
       }
     };
   }

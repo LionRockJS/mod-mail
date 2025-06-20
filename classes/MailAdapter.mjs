@@ -23,9 +23,7 @@ export default class MailAdapter {
     return {
       status: 'success',
       payload: {
-        message: `${this.service} always sent successfully`,
-        text: text,
-        html: opts.html,
+        message: `${this.service} always sent successfully`
       },
       id : '00000',
     };
