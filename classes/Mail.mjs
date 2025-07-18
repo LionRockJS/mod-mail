@@ -62,6 +62,7 @@ export default class Mail {
       dynamoDB = undefined,
       entity = "",
       entity_id = "",
+      domain = ""
     } = opts;
 
     await ControllerMixinDatabase.setup(this.state);
@@ -78,6 +79,9 @@ export default class Mail {
       html,
       text,
       tokens: JSON.stringify(tokens),
+      entity,
+      entity_id,
+      domain
     })
     await mail.write();
 
