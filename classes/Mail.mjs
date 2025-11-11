@@ -43,6 +43,7 @@ export default class Mail {
    * @param {string[][]=} opts.attachments ['filename', 'data-path']
    * @param {object=} opts.tokens
    * @param {string[][]=} opts.metadata ['user', '12345']
+   * @param {string=} opts.reply_to
    * @param {boolean=} opts.preview
    * @returns {Promise<unknown>}
    */
@@ -62,7 +63,8 @@ export default class Mail {
       dynamoDB = undefined,
       entity = "",
       entity_id = "",
-      domain = ""
+      domain = "",
+      reply_to = "",
     } = opts;
 
     await ControllerMixinDatabase.setup(this.state);
@@ -81,7 +83,8 @@ export default class Mail {
       tokens: JSON.stringify(tokens),
       entity,
       entity_id,
-      domain
+      domain,
+      reply_to
     })
     await mail.write();
 
@@ -98,7 +101,7 @@ export default class Mail {
     content.subject = this.parse(content.subject, tokens);
 
     const adapter = (preview) ? this.#previewAdapter : this.#adapter;
-    const options = { cc, bcc, inlines, attachments, metadata, html: content.html, project, dynamoDB};
+    const options = { cc, bcc, inlines, attachments, metadata, html: content.html, project, dynamoDB, reply_to};
 
     const result = await adapter.send(content.subject, content.text, sender, recipient, options);
 
