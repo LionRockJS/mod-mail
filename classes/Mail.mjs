@@ -26,7 +26,8 @@ export default class Mail {
     this.#previewAdapter = new MailAdapter();
     this.state = new Map();
     ControllerMixinDatabase.init(this.state);
-    this.state.get(ControllerMixinDatabase.DATABASE_MAP).set('mail', Central.config.mail.databasePath + '/' + Central.config.mail.database);
+
+    this.state.get(ControllerMixinDatabase.DATABASE_MAP).set('mail', Central.config.mail.databaseMap.get('mail'));
   }
 
   /**

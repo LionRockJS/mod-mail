@@ -20,10 +20,9 @@ export default class ControllerEmail extends Controller {
 
   constructor(request) {
     super(request);
-    const databasePath = Central.config.mail.databasePath;
-    const database = Central.config.mail.database;
 
-    this.state.get(ControllerMixinDatabase.DATABASE_MAP).set('mail', databasePath + '/' + database);
+    this.state.get(ControllerMixinDatabase.DATABASE_MAP)
+      .set('mail', Central.config.mail.databaseMap.get('mail'));
   }
 
   async action_view() {

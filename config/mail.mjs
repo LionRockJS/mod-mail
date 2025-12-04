@@ -7,6 +7,7 @@ export default {
   webhookKey: 'any-example-key',
 
   adapter: MailAdapter,
-  databasePath: `${Central.EXE_PATH}/../database`,
-  database: 'mail.sqlite',
+  databaseMap: new Map([
+    ['mail', `${Central.APP_PATH}/../database/mail.sqlite`]
+  ])
 };
