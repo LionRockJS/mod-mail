@@ -1,6 +1,9 @@
+import ConfigMail from './config/mail.mjs';
+
 export default {
-  filename: import.meta.url,
-  configs: ['mail']
+  configs: {
+    mail: ConfigMail,
+  }
 }
 
 import ControllerEmail from '../classes/controller/Email.mjs';

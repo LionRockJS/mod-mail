@@ -1,6 +1,13 @@
 declare const _default: {
-    filename: string;
-    configs: string[];
+    configs: {
+        mail: {
+            templateFolder: string;
+            cache: boolean;
+            webhookKey: string;
+            adapter: any;
+            databaseMap: Map<string, string>;
+        };
+    };
 };
 export default _default;
 import ControllerEmail from '../classes/controller/Email.mjs';
